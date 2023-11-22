@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  db:
+    image: mariadb:10.5.8
+    container_name: ${APP_NAME}_db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - ${DB_PORT}:3306
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db:/var/lib/mysql/
+    networks:
+      - local-utils-network
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    ports:
+      - 8080:8080
+    networks:
+      - local-utils-network
+
+networks:
+  local-utils-network:
+    driver: bridge
+
+volumes:
+  db:
