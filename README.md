@@ -16,5 +16,5 @@ W celu utworzenia tabel w bazie danych oraz uzupełnienia przykładowymi danymi 
 ### Logowanie do Adminera
 1. W przeglądarce wpisujemy adres `http://localhost:8080/`
 2. Logujemy się za pomocą danych widczonych w załączonym zrzucie ekarnu (hasło = password)
-![Screenshot 2023-11-22 at 23.07.15.png](..%2F..%2F..%2F..%2FDesktop%2FScreenshot%202023-11-22%20at%2023.07.15.png)
 
+![adminer.png](adminer.png)
