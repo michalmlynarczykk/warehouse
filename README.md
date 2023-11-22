@@ -9,6 +9,8 @@ Jak uruchomić projekt:
 za pomocą komendy: `docker-compose -f docker-compose-local-utils.yaml up -d` 
 2. Włączamy serwer dla PHP za pomocą: `php artisan serve`
 
+Domyślnie serwer zostaje uruchomiony na localhost port 8000
+
 W celu utworzenia tabel w bazie danych oraz uzupełnienia przykładowymi danymi wykonujemy dwie komendy:
  - `php artisan migrate`
  - `php artisan db:seed --class=DatabaseSeeder`
