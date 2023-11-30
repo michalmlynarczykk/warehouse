@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/welcome', [AuthController::class, 'welcome'])->name('welcome');
 
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 
