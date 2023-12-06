@@ -12,6 +12,9 @@ class AuthController extends Controller
 {
     public function login()
     {
+        if (Auth::check()) {
+            return redirect(route('home'));
+        }
         return view('login');
     }
 
@@ -24,15 +27,17 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended(route('welcome'));
-//            return view('welcome');
+            return redirect()->intended(route('home'));
         }
-        return redirect(route('register'))->with("error", "login credentials not valid");
+        return redirect(route('login'))->with("error", "login credentials not valid");
 
     }
 
     public function register()
     {
+        if (Auth::check()) {
+            return redirect(route('home'));
+        }
         return view('register');
     }
 
@@ -64,8 +69,4 @@ class AuthController extends Controller
         return redirect(route('login'))->with("success", "You have logged out successfully");
     }
 
-    public function welcome()
-    {
-        return view('welcome');
-    }
 }
