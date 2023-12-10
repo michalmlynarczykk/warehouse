@@ -11,26 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->string('password');
-            $table->string('role');
+            $table->string('street', 100)->nullable(false);
+            $table->string('city', 50)->nullable(false);
+            $table->string('state', 50)->nullable(false);
+            $table->string('zip_code', 20)->nullable(false);
             $table->timestamps();
         });
-
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
+            $table->dropForeign(['address_id']);
+            $table->dropColumn('address_id');
         });
-        Schema::dropIfExists('users');
+
+        Schema::dropIfExists('addresses');
     }
 };
