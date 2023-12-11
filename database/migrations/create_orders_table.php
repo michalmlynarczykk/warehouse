@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->date('date')->nullable(false);;
             $table->string('status')->nullable(false);;
-            $table->unsignedBigInteger('user_id')->nullable(false);;
-            $table->unsignedBigInteger('address_id')->nullable(false);; // Assuming an address is associated with each order
+            $table->unsignedBigInteger('user_id')->nullable(false);
+            $table->unsignedBigInteger('address_id')->nullable(false);
             $table->timestamps();
 
             // Foreign key constraints
@@ -33,7 +33,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders_items', function (Blueprint $table) {
+        Schema::table('order_items', function (Blueprint $table) {
             $table->dropForeign(['order_id']);
             $table->dropColumn('order_id');
         });
