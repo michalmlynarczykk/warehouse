@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignIdFor(Order::class)->constrained();
             $table->foreignIdFor(Item::class)->constrained();
-            $table->integer('quantity');
+            $table->integer('quantity')->nullable(false);
             $table->timestamps();
         });
     }
