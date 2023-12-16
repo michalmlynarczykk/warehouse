@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Roles;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +15,7 @@ class AuthController extends Controller
     public function login()
     {
         if (Auth::check()) {
-            return redirect(route('home'));
+            return redirect()->intended(route('items.all'));
         }
         return view('login');
     }
@@ -27,7 +29,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended(route('home'));
+            return redirect()->intended(route('items.all'));
         }
         return redirect(route('login'))->with("error", "login credentials not valid");
 

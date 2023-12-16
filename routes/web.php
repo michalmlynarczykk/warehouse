@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,11 +32,18 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     //Routes available to admin
     Route::middleware(['role:ADMIN'])->group(function () {
-        //write route hear
+        Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
+        Route::post('/items/create', [ItemController::class, 'createPost'])->name('items.create.post');
+    });
+
+    //Routes available to user
+    Route::middleware(['role:USER'])->group(function () {
+        Route::post('/order', [OrderController::class, 'createOrder'])->name('order.create');
     });
 
     //Routes available to User and Admin
     Route::middleware(['role:USER|ADMIN'])->group(function () {
+        Route::get('/items', [ItemController::class, 'all'])->name('items.all');
     });
 });
 
