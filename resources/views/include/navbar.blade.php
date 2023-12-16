@@ -8,6 +8,11 @@
         <ul class="navbar-nav ml-auto">
             @if(!request()->routeIs('landingPage'))
                 @auth
+                    @if(auth()->user()->role === \App\Models\Roles::ADMIN)
+                        <li class="nav-item {{ request()->routeIs('items.all') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('items.all') }}">Items</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}">Logout</a>
                     </li>
