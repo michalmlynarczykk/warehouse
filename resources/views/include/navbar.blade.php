@@ -10,6 +10,11 @@
                 @auth
                     @if(auth()->user()->role === \App\Models\Roles::ADMIN)
                         <li class="nav-item {{ request()->routeIs('items.all') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('items.admin_all') }}">Items</a>
+                        </li>
+                    @endif
+                    @if(auth()->user()->role === \App\Models\Roles::USER)
+                        <li class="nav-item {{ request()->routeIs('items.all') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('items.all') }}">Items</a>
                         </li>
                     @endif

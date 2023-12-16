@@ -28,7 +28,7 @@ class ItemController extends Controller
 
     public function all()
     {
-        $items = Item::paginate(10);
+        $items = Item::all();
         return view('items.all', compact('items'));
     }
 
