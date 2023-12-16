@@ -43,9 +43,5 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/items', [ItemController::class, 'all'])->name('items.all');
     });
 
-    //Routes available to User and Admin
-    Route::middleware(['role:USER|ADMIN'])->group(function () {
-        Route::get('/items', [ItemController::class, 'all'])->name('items.all');
-    });
 });
 
