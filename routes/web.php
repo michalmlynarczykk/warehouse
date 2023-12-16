@@ -25,6 +25,12 @@ Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/admin_home', [HomeController::class, 'adminHome'])->name('admin_home');
+
+Route::get('/user_home', [HomeController::class, 'userHome'])->name('user_home');
+
+Route::get('/warehouse_products', [HomeController::class, 'warehouseProducts'])->name('warehouse_products');
+
 Route::middleware(['auth'])->group(function () {
     //Routes available to admin
     Route::middleware(['role:ADMIN'])->group(function () {
