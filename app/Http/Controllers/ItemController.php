@@ -22,13 +22,19 @@ class ItemController extends Controller
 
         Item::create($request->all());
 
-        return redirect()->route('items.all')->with('success', 'Item added successfully!');
+        return redirect()->route('items.admin_all')->with('success', 'Item added successfully!');
     }
 
 
     public function all()
     {
-        $items = Item::paginate(15);
+        $items = Item::paginate(10);
         return view('items.all', compact('items'));
+    }
+
+    public function adminAll()
+    {
+        $items = Item::paginate(10);
+        return view('items.admin_all', compact('items'));
     }
 }

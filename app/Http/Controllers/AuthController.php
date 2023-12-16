@@ -29,7 +29,8 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended(route('items.all'));
+            return $this->getViewBasedOnRole();
+
         }
         return redirect(route('login'))->with("error", "login credentials not valid");
 
@@ -38,7 +39,7 @@ class AuthController extends Controller
     public function register()
     {
         if (Auth::check()) {
-            return redirect(route('home'));
+            return $this->getViewBasedOnRole();
         }
         return view('register');
     }
@@ -69,6 +70,18 @@ class AuthController extends Controller
         Session::flush();
         Auth::logout();
         return redirect(route('login'))->with("success", "You have logged out successfully");
+    }
+
+    /**
+     * @return RedirectResponse
+     */
+    public function getViewBasedOnRole(): RedirectResponse
+    {
+        if (auth()->user()->role === Roles::USER) {
+            return redirect()->intended(route('items.all'));
+        } else {
+            return redirect()->intended(route('items.admin_all'));
+        }
     }
 
 }
