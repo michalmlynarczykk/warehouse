@@ -21,9 +21,9 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function deliveryAddress(): HasOne
+    public function address(): BelongsTo
     {
-        return $this->hasOne(Address::class);
+        return $this->belongsTo(Address::class);
     }
 
     public function items(): HasMany
