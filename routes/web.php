@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/', [LandingPageController::class, 'landingPage'])->name('landingPage');
 
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 
@@ -33,7 +35,6 @@ Route::middleware(['auth'])->group(function () {
 
     //Routes available to User and Admin
     Route::middleware(['role:USER|ADMIN'])->group(function () {
-        Route::get('/home', [HomeController::class, 'home'])->name('home');
     });
 });
 
