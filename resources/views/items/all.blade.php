@@ -6,15 +6,24 @@
     <div class="container mt-5">
         <h2>Items</h2>
 
+        <form action="{{ route('items.all') }}" class="form-inline" method="GET">
+            <div class="form-group mb-2">
+                <label for="filter" class="col-sm-2 col-form-label">Filter</label>
+                <input type="text" class="form-control" id="filter" name="filter" placeholder="Item name..."
+                       value="{{ $filter ?? '' }}">
+            </div>
+            <button type="submit" class="btn btn-secondary mb-2">Filter</button>
+        </form>
+
         <form action="{{ route('order.create') }}" method="POST">
             @csrf
             <table class="table">
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Available Amount</th>
+                    <th>@sortablelink('name', 'Name')</th>
+                    <th>@sortablelink('price', 'Price')</th>
+                    <th>@sortablelink('available_amount', 'Available Amount')</th>
                     <th>Order Quantity</th>
                 </tr>
                 </thead>
@@ -38,7 +47,10 @@
                 </tbody>
             </table>
 
-            <!-- Add fields for Address model -->
+            <div class="d-flex justify-content-center">
+                {{ $items->links('pagination::simple-bootstrap-4') }}
+            </div>
+
             <div class="mb-3">
                 <label for="street" class="form-label">Street:</label>
                 <input type="text" class="form-control" id="street" name="street" required>

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+
+
     public function create()
     {
         return view('items.create');
@@ -26,15 +29,31 @@ class ItemController extends Controller
     }
 
 
-    public function all()
+    public function all(Request $request)
     {
-        $items = Item::all();
+        $items = $this->getItems($request);
         return view('items.all', compact('items'));
     }
 
-    public function adminAll()
+    public function adminAll(Request $request)
     {
-        $items = Item::paginate(10);
+        $items = $this->getItems($request);
         return view('items.admin_all', compact('items'));
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getItems(Request $request)
+    {
+        $filter = $request->query('filter');
+        if (!empty($filter)) {
+            return Item::sortable()
+                ->where('name', 'like', '%' . $filter . '%')
+                ->paginate(Constants::PAGINATION_SIZE);
+        } else {
+            return Item::sortable()
+                ->paginate(Constants::PAGINATION_SIZE);
+        }
     }
 }
