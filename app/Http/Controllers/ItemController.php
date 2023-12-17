@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+
+
     public function create()
     {
         return view('items.create');
@@ -47,10 +50,10 @@ class ItemController extends Controller
         if (!empty($filter)) {
             return Item::sortable()
                 ->where('name', 'like', '%' . $filter . '%')
-                ->paginate(10);
+                ->paginate(Constants::PAGINATION_SIZE);
         } else {
             return Item::sortable()
-                ->paginate(10);
+                ->paginate(Constants::PAGINATION_SIZE);
         }
     }
 }
