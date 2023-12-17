@@ -32,6 +32,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     //Routes available to admin
     Route::middleware(['role:ADMIN'])->group(function () {
+        Route::get('/admin/items', [ItemController::class, 'adminAll'])->name('items.admin_all');
         Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
         Route::post('/items/create', [ItemController::class, 'createPost'])->name('items.create.post');
     });
@@ -39,11 +40,8 @@ Route::middleware(['auth'])->group(function () {
     //Routes available to user
     Route::middleware(['role:USER'])->group(function () {
         Route::post('/order', [OrderController::class, 'createOrder'])->name('order.create');
-    });
-
-    //Routes available to User and Admin
-    Route::middleware(['role:USER|ADMIN'])->group(function () {
         Route::get('/items', [ItemController::class, 'all'])->name('items.all');
     });
+
 });
 
