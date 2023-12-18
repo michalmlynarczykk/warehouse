@@ -15,4 +15,14 @@ class Item extends Model
     ];
 
     public $sortable = ['name', 'price', 'available_amount'];
+
+    public function getAvailableAmount()
+    {
+        return $this->available_amount;
+    }
+
+    public function updateAvailableAmount($newAmount): void
+    {
+        $this->update(['available_amount' => $newAmount]);
+    }
 }

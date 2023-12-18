@@ -34,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:ADMIN'])->group(function () {
         Route::get('/admin/items', [ItemController::class, 'adminAll'])->name('items.admin_all');
         Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
+        Route::get('/items/update/{itemId}', [ItemController::class, 'updateForm'])->name('items.update');
+        Route::put('/items/update/{itemId}', [ItemController::class, 'updateItem'])->name('items.update.put');
+        Route::delete('/items/{itemId}', [ItemController::class, 'deleteItem'])->name('items.delete');
         Route::post('/items/create', [ItemController::class, 'createPost'])->name('items.create.post');
     });
 
