@@ -22,6 +22,7 @@
                     <th>@sortablelink('name', 'Name')</th>
                     <th>@sortablelink('price', 'Price')</th>
                     <th>@sortablelink('available_amount', 'Available Amount')</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,14 @@
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->price }}</td>
                         <td>{{ $item->available_amount }}</td>
+                        <td>
+                            <a href="{{ route('items.update', $item->id) }}" class="btn btn-primary">Edit</a>
+                            <form action="{{ route('items.delete', $item->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
                     </tr>
                 @empty
                     <tr>
@@ -44,8 +53,8 @@
                 {{ $items->links('pagination::simple-bootstrap-4') }}
             </div>
 
-            <a class="d-flex justify-content-center mt-1" href="{{ route('items.create') }}">
-                <button type="submit" class="btn btn-success">Add new item</button>
-            </a>
+            <div class="d-flex justify-content-center mt-1">
+                <a href="{{ route('items.create') }}" class="btn btn-success btn-block">Add new item</a>
+            </div>
         </div>
 @endsection
