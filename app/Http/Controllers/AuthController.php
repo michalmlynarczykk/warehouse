@@ -15,7 +15,7 @@ class AuthController extends Controller
     public function login()
     {
         if (Auth::check()) {
-            return redirect()->intended(route('items.all'));
+            return $this->getViewBasedOnRole();
         }
         return view('login');
     }
@@ -75,7 +75,7 @@ class AuthController extends Controller
     /**
      * @return RedirectResponse
      */
-    public function getViewBasedOnRole(): RedirectResponse
+    private function getViewBasedOnRole(): RedirectResponse
     {
         if (auth()->user()->role === Roles::USER) {
             return redirect()->intended(route('items.all'));
