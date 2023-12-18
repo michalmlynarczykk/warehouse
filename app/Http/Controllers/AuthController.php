@@ -79,9 +79,9 @@ class AuthController extends Controller
     {
         if (auth()->user()->role === Roles::USER) {
             return redirect()->intended(route('items.all'));
-        } else {
-            return redirect()->intended(route('items.admin_all'));
         }
+
+        return redirect()->intended(route('items.admin_all'));
     }
 
 }

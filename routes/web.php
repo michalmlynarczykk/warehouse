@@ -33,17 +33,24 @@ Route::middleware(['auth'])->group(function () {
     //Routes available to admin
     Route::middleware(['role:ADMIN'])->group(function () {
         Route::get('/admin/items', [ItemController::class, 'adminAll'])->name('items.admin_all');
-        Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
-        Route::get('/items/update/{itemId}', [ItemController::class, 'updateForm'])->name('items.update');
-        Route::put('/items/update/{itemId}', [ItemController::class, 'updateItem'])->name('items.update.put');
-        Route::delete('/items/{itemId}', [ItemController::class, 'deleteItem'])->name('items.delete');
-        Route::post('/items/create', [ItemController::class, 'createPost'])->name('items.create.post');
+        Route::get('/admin/items/create', [ItemController::class, 'create'])->name('items.create');
+        Route::get('/admin/items/update/{itemId}', [ItemController::class, 'updateForm'])->name('items.update');
+        Route::put('/admin/items/update/{itemId}', [ItemController::class, 'updateItem'])->name('items.update.put');
+        Route::delete('/admin/items/{itemId}', [ItemController::class, 'deleteItem'])->name('items.delete');
+        Route::post('/admin/items/create', [ItemController::class, 'createPost'])->name('items.create.post');
+        Route::patch('/orders/{orderId}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     });
 
     //Routes available to user
     Route::middleware(['role:USER'])->group(function () {
         Route::post('/order', [OrderController::class, 'createOrder'])->name('order.create');
         Route::get('/items', [ItemController::class, 'all'])->name('items.all');
+    });
+
+    //Routes available to User and Admin
+    Route::middleware(['role:USER|ADMIN'])->group(function () {
+        Route::get('/orders', [OrderController::class, 'all'])->name('orders.all');
+        Route::get('/orders/{orderId}', [OrderController::class, 'details'])->name('orders.details');
     });
 
 });
