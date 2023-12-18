@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('date')->nullable(false);
             $table->string('status')->nullable(false);
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Address::class)->constrained();
