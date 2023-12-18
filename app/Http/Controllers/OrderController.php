@@ -24,7 +24,7 @@ class OrderController extends Controller
             DB::commit();
 
         } catch (BadRequestException $e) {
-            return redirect()->route('items.all')->with('error', 'Failed to place the order. '.$e->getMessage());
+            return redirect()->route('items.all')->with('error', 'Failed to place the order. ' . $e->getMessage());
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('items.all')->with('error', 'Failed to place the order. Please try again.');
@@ -69,12 +69,18 @@ class OrderController extends Controller
             $quantity = $itemData['quantity'];
             if ($quantity > 0) {
                 $hasNonZeroQuantity = true;
+                $item = Item::findOrFail($itemId);
+                $availableAmount = $item->getAvailableAmount();
+
+                if ($availableAmount < $quantity) {
+                    throw new BadRequestException("Requested amount for item '{$item->name}' is too big.");
+                }
+                $item->updateAvailableAmount($availableAmount - $quantity);
 
                 $orderItem = new OrderItem([
                     'quantity' => $quantity,
                 ]);
 
-                $item = Item::findOrFail($itemId);
                 $orderItem->item()->associate($item);
                 $order->items()->save($orderItem);
             }
