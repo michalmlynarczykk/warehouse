@@ -9,7 +9,7 @@
             @if(!request()->routeIs('landingPage'))
                 @auth
                     @if(auth()->user()->role === \App\Models\Roles::ADMIN)
-                        <li class="nav-item {{ request()->routeIs('items.all') ? 'active' : '' }}">
+                        <li class="nav-item {{ request()->routeIs('items.admin_all') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('items.admin_all') }}">Items</a>
                         </li>
                     @endif
@@ -18,6 +18,9 @@
                             <a class="nav-link" href="{{ route('items.all') }}">Items</a>
                         </li>
                     @endif
+                    <li class="nav-item {{ request()->routeIs('orders.all') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('orders.all') }}">Orders</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}">Logout</a>
                     </li>

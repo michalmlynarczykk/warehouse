@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Models\Address;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderStatus;
+use App\Models\Roles;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
@@ -39,7 +42,6 @@ class OrderController extends Controller
     private function saveOrder(Request $request): void
     {
         $order = new Order();
-        $order->date = now();
         $order->status = OrderStatus::NEW;
 
         $address = new Address([
@@ -103,5 +105,63 @@ class OrderController extends Controller
             'zip_code' => 'required|string|max:20|min:1',
             'order_items' => 'required'
         ]);
+    }
+
+
+    public function all()
+    {
+        if ($this->isUser()) {
+            $orders = Order::sortable()
+                ->where('orders.user_id', '=', Auth::user()->id)
+                ->paginate(Constants::PAGINATION_SIZE);
+        } else {
+            $orders = Order::sortable()->paginate(Constants::PAGINATION_SIZE);
+        }
+
+        return view('orders.all', compact('orders'));
+    }
+
+
+    public function details($id)
+    {
+        $order = Order::findOrFail($id);
+        return $this->returnViewBasedOnRole($order);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+
+        if (!in_array($order->status, [OrderStatus::COMPLETED, OrderStatus::CANCELED])) {
+            $request->validate([
+                'status' => 'required|in:' . implode(',', [OrderStatus::PENDING, OrderStatus::NEW, OrderStatus::COMPLETED, OrderStatus::CANCELED]),
+            ]);
+
+            $order->update(['status' => $request->input('status')]);
+
+            return redirect()->back()->with('success', 'Order status updated successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Cannot update status for completed or canceled orders.');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
+    private function returnViewBasedOnRole($order)
+    {
+        if ($this->isUser()) {
+            return view('orders.details', compact('order'));
+        }
+
+        return view('orders.admin_details', compact('order'));
+    }
+
+    /**
+     * @return bool
+     */
+    private function isUser(): bool
+    {
+        return auth()->user()->role === Roles::USER;
     }
 }
