@@ -1,0 +1,45 @@
+version: '3.7'
+name: warehouse-project
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    container_name: ${APP_NAME}
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10.5.8
+    container_name: db
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "mysql -h localhost -u root -p${DB_PASSWORD} -e 'use ${DB_DATABASE};'" ]
+      interval: 2s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - db-warehouse:/var/lib/mysql/
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    ports:
+      - 8080:8080
+
+volumes:
+  db-warehouse:

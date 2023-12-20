@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\User;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,7 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         User::factory()->count(10)->create();
+        $path = database_path('sql/init.sql');
+        $sql = file_get_contents($path);
+        DB::unprepared($sql);
 
     }
 }
