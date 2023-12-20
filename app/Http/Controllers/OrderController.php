@@ -132,26 +132,21 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        // Check if the order status is not 'completed' or 'canceled'
         if (!in_array($order->status, [OrderStatus::COMPLETED, OrderStatus::CANCELED])) {
-            // Validate the request data (you can add more validation rules as needed)
             $request->validate([
                 'status' => 'required|in:' . implode(',', [OrderStatus::PENDING, OrderStatus::NEW, OrderStatus::COMPLETED, OrderStatus::CANCELED]),
             ]);
 
-            // Update the order status
             $order->update(['status' => $request->input('status')]);
 
-            // Redirect back with a success message
             return redirect()->back()->with('success', 'Order status updated successfully.');
         }
 
-        // If the status is 'completed' or 'canceled', redirect back with a message
         return redirect()->back()->with('error', 'Cannot update status for completed or canceled orders.');
     }
 
     /**
-     * @return RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     private function returnViewBasedOnRole($order)
     {
@@ -165,7 +160,7 @@ class OrderController extends Controller
     /**
      * @return bool
      */
-    public function isUser(): bool
+    private function isUser(): bool
     {
         return auth()->user()->role === Roles::USER;
     }
