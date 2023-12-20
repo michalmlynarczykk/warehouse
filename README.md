@@ -1,22 +1,28 @@
-# Warehouse
-### Konfiguracja lokalnego środowiska
-Wymagania:
-- zainstalowany docker desktop
-- zainstalowany PHP oraz composer
+# System zarządzania magazynem
+Aplikacja służy do zarządzania produktami oraz zamówieniami w magazynie.
+Dostępne są dwie role:
+- Użytkownik - ma możliwość przeglądania dostępnych przedmiotów oraz składania zamówień 
+(oraz wyświetlania ich szczegółów wraz ze stanem).
+- Administrator - może dodawać/usuwać produkty do magazynu, przeglądać zamówienia oraz aktualizować ich stan.
 
-Jak uruchomić projekt:
-1. Po pobraniu repozytorium, będąc w root projektu uruchamiamy bazę danych oraz GUI (Adminer)
-za pomocą komendy: `docker-compose -f docker-compose-local-utils.yaml up -d` 
-2. Włączamy serwer dla PHP za pomocą: `php artisan serve`
+## Uruchomienie aplikacji lokalnie
+### Wymagania:
+- Zainstalowany i włączony [Docker](https://docs.docker.com/engine/install/)
+- Zainstalowany system kontroli wersji [GIT](https://git-scm.com/downloads)
 
-Domyślnie serwer zostaje uruchomiony na localhost port 8000
+### Kroki do wykonania
+1. Sklonowanie repozytorium `git clone https://github.com/michalmlynarczykk/warehouse.git`
+2. Będąc w katalogu root projektu uruchamiamy kontenery z aplikacją, bazą danych oraz panelem do zarządzania bazą danych
+`docker-compose up -d`
 
-W celu utworzenia tabel w bazie danych oraz uzupełnienia przykładowymi danymi wykonujemy dwie komendy:
- - `php artisan migrate`
- - `php artisan db:seed --class=DatabaseSeeder`
+Po włączeniu kontenerów:
+- Aplikacja jest dostępna pod adresem [http://0.0.0.0:8000/](http://0.0.0.0:8000/)
+- Adminer jest dostępny po adresem [http://localhost:8080/](http://localhost:8080/) 
+dane do logowania: username: "root" hasło: "password"
 
-### Logowanie do Adminera
-1. W przeglądarce wpisujemy adres `http://localhost:8080/`
-2. Logujemy się za pomocą danych widczonych w załączonym zrzucie ekarnu (hasło = password)
+Po uruchomieniu aplikacji możemy zalogować się na dwa konta (dane zostały dodane przy uruchomieniu):
+- login: "admin@test.pl" hasło: "admin"
+- login: "user@test.pl" hasło: "user"
 
-![adminer.png](adminer.png)
+### Wyłączenie kontenerów
+- `docker-compose down`
