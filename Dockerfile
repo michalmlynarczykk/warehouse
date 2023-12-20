@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
 COPY . .
 RUN composer update && \
     composer install && \
+    composer require doctrine/dbal && \
     chmod +x /var/www/html/run.sh
 
 ENTRYPOINT ["/var/www/html/run.sh"]
